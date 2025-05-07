@@ -168,7 +168,7 @@ With that being said, BCHM5420 will use the following virtual environment which 
 
 
 ```python
-curl -O https://github.com/uleth-advanced-bioinformatics/BCHM5420A-summer-2025/tree/draft/resources/advanced_bioinfo_env.yml
+curl -O https://raw.githubusercontent.com/uleth-advanced-bioinformatics/BCHM5420A-summer-2025/refs/heads/main/resources/advanced_bioinfo_env.yml
 
 conda env create -f advanced_bioinfo_env.yml
 
@@ -672,10 +672,13 @@ In the mean time, you can make your own repositories and work from the main bran
 
 <img src="../../images/laptop.png" width=55> 
 
-Below are a few resources to get more comfortable with Git and Github
+
+Let's walk through the levels of the [git-game](https://github.com/git-game/git-game) to get familiar with some more git commands.
+
+
+Below are a few more resources to comfortable with Git and Github
 
 - https://learngitbranching.js.org/ 
-- https://github.com/git-game/git-game (can you make it to level 10?)
 - https://ohmygit.org/
 
 ## Research Question Brainstorm

@@ -6,6 +6,6 @@ dependencies:
   - python=3.12
   - r-base=4.1.1
   - tree=2.2.1
-  - nextflow=24.10.5.5935
+  - nextflow=24.10.5
   - jupyter=1.1.1
   - graphviz
