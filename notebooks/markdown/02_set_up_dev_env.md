@@ -455,7 +455,7 @@ Copy this public key and go onto your github page to [connect the SSH Key to you
 
 
 
-<img src="../../images/02_you_did_it.gif" width = 400 >
+<img src="../../images/02_you_did_it.gif"  >
 <div style="font-size: 12px">
 Congratulations! You've now set up your SSH Key!
 </div>
@@ -465,9 +465,25 @@ You should now be able to clone your repo to your computer.
 
 ### Git basics
 
-As an example, let's try to clone our class repo [uleth-advanced-bioinformatics/BCHM5420A-summer-2025](https://github.com/uleth-advanced-bioinformatics/BCHM5420A-summer-2025)
+First, let's make a new repository on Github.
 
-Let's make a directory in your home directory. 
+
+1. Click on your profile icon in the top right hand corner on your Github website, then select "Your repositories", and then select "New" (the green button in the top right corner)
+
+<img src="../../images/02_create_repo.png" width = 550>
+
+
+2. Select the name of your repository, and whether you want this repo to be public or private. You can change these details at any time! Select to add a README.md so that you can add information about your repo.
+
+<img src="../../images/02_new_repo_details.png">
+
+3. Click the green code button, select SSH, and copy the url to clone your repo
+
+<img src="../../images/02_clone_repo.png">
+
+
+
+4. Let's make a directory in your home directory to clone your repo into  
 
 
 ```python
@@ -484,10 +500,18 @@ cd ~/BCHM5420/02_set_up_dev_env/
 - `cd` is a command to change directories. In this case we are changing directories to work within ~/BCHM5420/02_set_up_dev_env/ (extra tip: use `pwd` to determine your current working directory on the command line)
 
 
+5. Now let's clone your repo
+
+
+
+
 
 ```python
-git clone git@github.com:uleth-advanced-bioinformatics/BCHM5420A-summer-2025.git
+git clone <paste url you copied in Step 3>
 ```
+
+The following example goes through cloning our class repository but you should do this on your repository otherwise you won't be able to "git push" your changes to the Github website due to permissions.
+
 
 If this is your first time connecting to github, you may see this
 
@@ -516,7 +540,7 @@ Let's assume everything went smoothly! Now we've got our repo. Let's change dire
 
 
 ```python
-cd BCHM5420A-summer-2025
+cd <the name of your repo>
 git status
 ```
 
@@ -584,7 +608,7 @@ git status
 You've now added a new file to the repository but we need to commit the changes to lock it in
 </div>
 
-First let's set up our username and email that will be associated with our commit on github
+Before we commit our changes, we need to set up our username and email that will be associated with our commit on Github. You only have to do this step once.
 
 
 ```python
