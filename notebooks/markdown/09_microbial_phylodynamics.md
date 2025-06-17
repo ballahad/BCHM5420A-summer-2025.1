@@ -151,11 +151,9 @@ The ***quality*** of your MSA is crucial to the quality of the tree generated. G
 
 Phylogenetic trees are commonly represented as:
 
-- **NEXUS:** #NEXUS
-            Begin trees;
-            Tree tree1 = ((A:0.1,B:0.2):0.3,C:0.4);
-            End;
+- **NEXUS:** #NEXUS Begin trees; Tree tree1 = (A:0.1,B:0.2,(C:0.3,D:0.4):0.5); End;
 - **Newick:** (A:0.1,B:0.2,(C:0.3,D:0.4):0.5); 
+- **JSON:** {"name":"root","branch_length":null,"children":[{"name":"A","branch_length":0.1},{"name":"B","branch_length":0.2},{"branch_length":0.5,"children":[{"name":"C","branch_length":0.3},{"name":"D","branch_length":0.4}]}]}
 
 Newick is most popular and usually has file extensions like \*.nwk, \*.newick, or \*.tree. It can encode branch length information, node support, and node names.
 
@@ -198,17 +196,19 @@ Normally, we use maximum likelihood estimates (ie. which tree model best fits yo
 
 ## BEAST
 
-**B**ayesian **E**volutionary **A**nalysis by **S**ampling **T**rees. BEAST is a popular software for estimating time-measured phylogenies that was originally developed by Alexei Drummond & Andrew Rambaut in 2007, with a host of [contributors](https://www.beast2.org/citation/) since. It uses Bayes' Theorem and MCMC to generate 1000s of trees, each which explore parameter, sequence, and evolutionary space to obtain an "average" phylogenetic tree. In Bayesian statistics, we do not have a 95% confidence interval in the frequentist sense but instead have the conceptually similar 95% Highest Posterior Distribution (HPD), which is the shortset interval that contains 95% of the posterior probability mass. 
+**B**ayesian **E**volutionary **A**nalysis by **S**ampling **T**rees. BEAST is a popular software for estimating time-measured phylogenies that was originally developed by Alexei Drummond & Andrew Rambaut in 2007, with a host of [contributors](https://www.beast2.org/citation/) since. It uses Bayes' Theorem and MCMC to generate 1000s of trees, each which explore parameter, sequence, and evolutionary space to obtain an "average" phylogenetic tree. In Bayesian statistics, we do not have a 95% confidence interval in the frequentist sense but instead have the conceptually similar 95% Highest Posterior Density (HPD), which is the shortset interval that contains 95% of the posterior probability mass. 
 
 ### Mechanistic Overview
 
-Bayesian methods use Markov Chain Monte Carlo (MCMC) sampling which results in a large number of trees representing the distribution over all possible phylogenies. In standard genetic distance phylogenies, we estimate which sequences came from where, how close certain sequences are to each other through time or at any given point in time. BEAST allows you to do anything you can do with regular phylogenies but instead of basing observations off of a single tree, you are now drawing conclusions from an “average” tree of multiple samples from a posterior distribution. There are underlying models that go into creating a phylogenetic model (tree):
+In standard genetic distance phylogenies, we estimate which sequences came from where, how close certain sequences are to each other through time or at any given point in time. BEAST allows you to do anything you can do with regular phylogenies but instead of basing observations off of a single tree, you are now drawing conclusions from an “average” tree of multiple samples from a posterior distribution. There are underlying models that go into creating a phylogenetic model (tree):
 
 - clock models: the rate at which mutations occur across the branches 
 - substitution models: the rate at which/ how nucleotides change across the genome 
 - branch models: the way branches diverge and their lengths
 
-Each of these is a prior (branch prior, clock prior, substitution prior), each with several choices of models (ex. the clock prior has a strict clock model, relaxed uncorrelated, relaxed correlated, local clock model..) that together provide some *prior* information (P(A) in Bayes' Theorem) that we will incorporate into our final tree. 
+Each of these is a prior (branch prior, clock prior, substitution prior), each with several choices of models (ex. the clock prior has a strict clock model, relaxed uncorrelated, relaxed correlated, local [clock model](https://beast.community/clocks)..) that together provide some *prior* information (P(A) in Bayes' Theorem) that we will incorporate into our final tree. 
+
+Bayesian methods use Markov Chain Monte Carlo (MCMC) sampling which results in a large number of trees representing the distribution over all possible phylogenies. Imagine a 2D landscape with peaks and valleys where each point on the landscape represents a possible tree (its topology + branch lengths + parameters). The height of the landscape at any point represents the posterior probability of that tree (see [Bayes' Theorem](#bayes-theorem)), so a point (tree) from a peak on this surface is more plausible given the data and model than a tree from a valley. Imagine you send a robot, blindfolded, to explore this surface (MCMC algorithm) and ask it to periodically record the point (tree) it is standing on (sample from the posterior distribution). The robot tends to move to higher areas (better trees) but sometimes visits lower areas on the surface. The result of this expedition is a collection of trees, drawn more frequently from high-probability regions of the landscape which provides confidence about most commonly occurring clades, estimates of parameters like evolutionary rate, and variability in divergence times.
 
 ### Analysis Overview 
 
@@ -267,7 +267,7 @@ As we know, the first step was to define the research question! What is the orig
 5. Align in MAFFT 
 6. Make a ML tree 1000 bootstraps with IQ-Tree
 
-<img src="../../images/09_flu_preprocess.png" width=500>
+<img src="../../images/09_flu_preprocess.png" width=00>
 
 7. Check temporal signal of dataset (n=84 NA segments) in `Tempest`
 
@@ -309,7 +309,7 @@ Where it shifts from phylogenetics to phylodynamics is when you integrate epidem
 
 <img src="../../images/09_interpretation_host.png" width=700 height=300>
 
-Here is a map zoomed of flyways - blue is the Mississippi flyway. If we looked at the map on the left overlayed with the data, one conclusion could be these ducks were breeding in the Mississippi flyway. Factoring in other metadata such as collection date (right map) allows further interpretations - maybe we can infer these two samples in Ohio were during breeding because April = ducklings and that the BC & Alberta samples may have been collected during fall migration season when they were headed south. We can infer these viral isolates are not from same season based on how far apart collection dates are. So are they detected here because it is where mallards infected with H1N1 are, or is there a sampling program in the Mississippi flyway? Could there be even more of a different bird harbouring H1N1 in the Pacific flyway that we are missing? 
+Here is a map of migratory flyways - blue is the Mississippi flyway. If we looked at the map on the left overlayed with the data, one conclusion could be these ducks were breeding in the Mississippi flyway. Factoring in other metadata such as collection date (right map) and what we know about breeding patterns allows further interpretation - maybe we can infer these two samples in Ohio were during breeding because April = ducklings and that the BC & Alberta samples may have been collected during fall migration season when they were headed south. We can assume these viral isolates are not from same season based on how far apart collection dates are. So are they detected here because it is where most mallards infected with H1N1 are, or is there a sampling program in the Mississippi flyway? Could there be even more infection in a different type of bird harbouring H1N1 in the Pacific flyway that we are missing? 
 
 **Consider Caveats:** 
 
@@ -317,13 +317,13 @@ As we think through the results, some caveats include:
 
 - The origin of D1.1 in BC depends on what was sampled – theoretically, it is possible if we sample a bunch of Egyptian geese, they would have viruses with NA segments that cluster with our BC D1.1 NA segments
 
-- Only have 4 H1N1 sample points – need to be careful about conclusions drawn - it is tempting to say mallards H5N1 were the source of D1.1 or that it originated from the Mississippi flyway but more analyses need to be done to support this. This is a preliminary analysis of data to formulate a hypothesis from. 
+- Only have 4 H1N1 sample points – need to be careful about conclusions drawn - it is tempting to say mallards infected with H1N1 were the source of D1.1 or that it originated from the Mississippi flyway but more analyses need to be done to support this. This is a preliminary analysis of data to formulate a hypothesis from. 
 
 - This is the NA segment only – introduction of NA segment into BC does not necessarily represent when D1.1 (all 8 segments) was introduced. It is possible that the reassortant segments happened all at once, but maybe in multiple steps. The ideal would be to perform this analysis for the other 3 segments and see if timing of introduction, host, location aligns among them to estimate a period over which D1.1 genotype was introduced into BC. 
 
 - Collection date precision = year – calibrating the time tree with more specific dates would give us a better estimate into the timing of events
 
-- Sequencing bias toward H1N1 samples
+- Sequencing bias toward H1N1 samples - maybe we are finding H1N1 because we are looking for it more (swine flu)
 
 **Conclusion:**
 
@@ -341,7 +341,7 @@ Himsworth, C. G., Caleta, J. M., Jassem, A. N., Yang, K. C., Zlosnik, J., Tyson,
 
 ## Phylodynamic Visualization
 
-There are GUI and CLI tools to visualize phylogenetic trees. You may want to quickly glance at your results, in which case iTOL (interactive Tree of Life) will allow you to manipulate and annotate, whereas other times you need a publication-quality figure, where ggtree may be more appropriate to allow more fine-grained control. 
+There are GUI and CLI tools to visualize phylogenetic trees. You may want to quickly glance at your results, in which case iTOL (interactive Tree of Life) will allow you to manipulate and annotate in your web browser, whereas other times you need a publication-quality figure, where `ggtree` may be more appropriate to allow more fine-grained control. 
 
 - FigTree
 - iTOL
@@ -353,7 +353,7 @@ The figure for publication was produced using `ggtree` in R v4.1.1:
 
 <img src = "../../images/09_ggtree_fig.png" width = 700>
 
-You can see that it affords a lot of control over labeling tips, coloring error bars, adding symbols to nodes. Here is the code that was used: 
+You can see that it affords a lot of control over labeling tips, coloring error bars, adding symbols to nodes. Here is the code that was generated it: 
 
 
 ```python
