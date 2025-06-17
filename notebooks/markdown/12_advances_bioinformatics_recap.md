@@ -406,7 +406,7 @@ plt.show()
 
 
     
-![png](12_advances_bioinformatics_recap_files/12_advances_bioinformatics_recap_25_0.png)
+![png](../../images/12_advances_bioinformatics_recap_25_0.png)
     
 
 
@@ -438,7 +438,7 @@ plt.show()
 
 
     
-![png](12_advances_bioinformatics_recap_files/12_advances_bioinformatics_recap_27_0.png)
+![png](../../images/12_advances_bioinformatics_recap_27_0.png)
     
 
 
@@ -477,7 +477,7 @@ plt.show()
 
 
     
-![png](12_advances_bioinformatics_recap_files/12_advances_bioinformatics_recap_29_0.png)
+![png](../../images/12_advances_bioinformatics_recap_29_0.png)
     
 
 
